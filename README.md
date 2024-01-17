@@ -1,5 +1,11 @@
 # AWS Lambda Function Template
 
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3121/)
+
+<a href="https://github.com/new?template_name=aws-lambda-function-template&template_owner=kwame-mintah">
+  <img src="https://img.shields.io/badge/use%20this-template-blue?logo=github">
+</a>
+
 This is a template project for a AWS Lambda function deployed as a docker image.
 
 This repository is intended as a quick-start and includes the following:
