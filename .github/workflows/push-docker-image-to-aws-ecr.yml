@@ -1,0 +1,50 @@
+name: "🚀 Push Docker image to AWS ECR"
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "./.cz.toml"
+
+env:
+  AWS_REGION: "${{ secrets.AWS_REGION }}"
+  AWS_ACCOUNT_ID: "${{ secrets.AWS_ACCOUNT_ID }}"
+  AWS_ECR_REPOSITORY: "${{ vars.AWS_ECR_REPOSITORY }}"
+
+jobs:
+  build:
+    name: "Build and push docker image"
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: "Configure AWS credentials from Develop account"
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+        with:
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github/AWSGitHubAction
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: "Latest semantic versioning tag"
+        id: "semver-version"
+        run: echo "TAG_NAME=$(cat VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: "Login to Amazon ECR"
+        id: "aws-ecr-login"
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2.0.1
+
+      - name: "Build, tag, and push to Amazon ECR"
+        env:
+          ECR_REGISTRY: ${{ steps.aws-ecr-login.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/$AWS_ECR_REPOSITORY:${{ steps.semver-version.outputs.TAG_NAME }} .
+          docker push $ECR_REGISTRY/$AWS_ECR_REPOSITORY:${{ steps.semver-version.outputs.TAG_NAME }}
