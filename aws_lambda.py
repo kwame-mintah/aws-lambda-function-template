@@ -3,7 +3,7 @@ import logging
 from models import S3Record
 
 # Configure logging
-logger = logging.getLogger("data-preprocessing")
+logger = logging.getLogger("aws-lambda")
 logger.setLevel(logging.INFO)
 
 
