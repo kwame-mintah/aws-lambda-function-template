@@ -2,6 +2,10 @@ from aws_lambda import lambda_handler
 
 
 def test_lambda():
+    """
+    Example unit test for lambda function created, passing in
+    the expected event to trigger it.
+    """
     event = example_s3_event()
     result = lambda_handler(event, None)
     assert result["Records"][0]["eventName"] == "ObjectCreated:Put"
