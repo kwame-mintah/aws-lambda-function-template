@@ -4,6 +4,7 @@
 <a href="https://github.com/new?template_name=aws-lambda-function-template&template_owner=kwame-mintah">
   <img src="https://img.shields.io/badge/use%20this-template-blue?logo=github">
 </a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 This is a template project for a AWS Lambda function deployed as a docker image.
 
