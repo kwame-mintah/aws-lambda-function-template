@@ -12,6 +12,9 @@ def test_lambda():
 
 
 def example_s3_event():
+    """
+    Example S3 event received by lambda.
+    """
     return {
         "Records": [
             {

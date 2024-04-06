@@ -8,6 +8,9 @@ logger.setLevel(logging.INFO)
 
 
 def lambda_handler(event, context):
+    """
+    Example lambda handler.
+    """
     logger.info("Received event: %s" % event)
     # Example for S3 Event received.
     s3_record = S3Record(event)
